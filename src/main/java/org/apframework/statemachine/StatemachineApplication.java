@@ -1,7 +1,7 @@
 package org.apframework.statemachine;
 
 import org.apframework.statemachine.core.Statemachine;
-import org.apframework.statemachine.enums.TradeEvents;
+import org.apframework.statemachine.core.enums.TradeEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,10 +28,10 @@ public class StatemachineApplication implements CommandLineRunner {
     public void run(String... strings) {
 
         Map<String, Object> context = new HashMap<>(16);
-        statemachineService.execute(1L, TradeEvents.PAY_SUCCEED, context);
-        statemachineService.execute(1L, TradeEvents.PAY_TIMEOUT, context);
-        statemachineService.execute(1L, TradeEvents.CONFIRM, context);
-        statemachineService.execute(1L, TradeEvents.REJECT, context);
+        statemachineService.execute("1314520", TradeEvents.PAY_SUCCEED, context);
+        statemachineService.execute("1314520", TradeEvents.PAY_TIMEOUT, context);
+        statemachineService.execute("1314520", TradeEvents.CONFIRM, context);
+        statemachineService.execute("1314520", TradeEvents.REJECT, context);
 
     }
 

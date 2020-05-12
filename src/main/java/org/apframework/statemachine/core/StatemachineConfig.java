@@ -1,7 +1,7 @@
 package org.apframework.statemachine.core;
 
-import org.apframework.statemachine.enums.TradeEvents;
-import org.apframework.statemachine.enums.TradeStates;
+import org.apframework.statemachine.core.enums.TradeEvents;
+import org.apframework.statemachine.core.enums.TradeStates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +31,8 @@ public class StatemachineConfig extends EnumStateMachineConfigurerAdapter<TradeS
     private Map<String, Action<TradeStates, TradeEvents>> actions;
 
     @Bean
-    public StateMachinePersister<TradeStates, TradeEvents, Long> stateMachinePersist() {
-        return new DefaultStateMachinePersister<>(bizStateMachinePersist);
+    public StateMachinePersister<TradeStates, TradeEvents, String> stateMachinePersist() {
+        return new DefaultStateMachinePersister(bizStateMachinePersist);
     }
 
     @Override

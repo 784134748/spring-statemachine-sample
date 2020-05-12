@@ -1,4 +1,4 @@
-package org.apframework.statemachine.enums;
+package org.apframework.statemachine.core.enums;
 
 
 /**

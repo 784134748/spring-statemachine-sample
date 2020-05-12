@@ -1,8 +1,8 @@
-package org.apframework.statemachine.action.biz;
+package org.apframework.statemachine.core.action.biz;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apframework.statemachine.enums.TradeEvents;
-import org.apframework.statemachine.enums.TradeStates;
+import org.apframework.statemachine.core.enums.TradeEvents;
+import org.apframework.statemachine.core.enums.TradeStates;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Service;
