@@ -11,6 +11,7 @@ import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.guard.Guard;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
 
@@ -30,6 +31,9 @@ public class StatemachineConfig extends EnumStateMachineConfigurerAdapter<TradeS
     @Autowired
     private Map<String, Action<TradeStates, TradeEvents>> actions;
 
+    @Autowired
+    private Map<String, Guard<TradeStates, TradeEvents>> guards;
+
     @Bean
     public StateMachinePersister<TradeStates, TradeEvents, String> stateMachinePersist() {
         return new DefaultStateMachinePersister(bizStateMachinePersist);
@@ -42,6 +46,9 @@ public class StatemachineConfig extends EnumStateMachineConfigurerAdapter<TradeS
                 .withStates()
                 //初识状态：WAITING_PAY
                 .initial(TradeStates.WAITING_PAY)
+                //分支选择
+                .choice(TradeStates.CHECK_LOVE)
+                .choice(TradeStates.CHECK_DELIVERY)
                 //所有状态集合
                 .states(EnumSet.allOf(TradeStates.class));
     }
@@ -66,9 +73,18 @@ public class StatemachineConfig extends EnumStateMachineConfigurerAdapter<TradeS
                 //确认接单
                 .and()
                 .withExternal()
-                .source(TradeStates.WAITING_CONFIRM).target(TradeStates.WAITING_RECEIVE)
+                .source(TradeStates.WAITING_CONFIRM).target(TradeStates.CHECK_LOVE)
                 .event(TradeEvents.CONFIRM)
-                .action(actions.get("confirmAction"))
+                .and()
+                .withChoice()
+                .source(TradeStates.CHECK_LOVE)
+                .first(TradeStates.FINISHED, guards.get("loveGuard"), actions.get("completeAction"))
+                .last(TradeStates.CHECK_DELIVERY)
+                .and()
+                .withChoice()
+                .source(TradeStates.CHECK_DELIVERY)
+                .first(TradeStates.WAITING_RECEIVE, guards.get("deliveryGuard"), actions.get("completeAction"))
+                .last(TradeStates.WAITING_DELIVERY, actions.get("completeAction"))
 
                 //拒绝接单
                 .and()

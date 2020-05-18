@@ -29,9 +29,9 @@ public class StatemachineApplication implements CommandLineRunner {
 
         Map<String, Object> context = new HashMap<>(16);
         statemachineService.execute("1314520", TradeEvents.PAY_SUCCEED, context);
-        statemachineService.execute("1314520", TradeEvents.PAY_TIMEOUT, context);
+//        statemachineService.execute("1314520", TradeEvents.PAY_TIMEOUT, context);
         statemachineService.execute("1314520", TradeEvents.CONFIRM, context);
-        statemachineService.execute("1314520", TradeEvents.REJECT, context);
+//        statemachineService.execute("1314520", TradeEvents.REJECT, context);
 
     }
 
